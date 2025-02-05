@@ -1,3 +1,7 @@
+# Archivos y carpetas de Visual Studio Code
+.vscode/
+
+# Archivos y carpetas generados por Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -7,11 +11,60 @@ release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
-# Eclipse m2e generated files
+# Archivos generados por Eclipse (m2e)
 # Eclipse Core
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Ignorar archivos de sistema de Windows
+Thumbs.db
+ehthumbs.db
+
+# Ignorar directorios de compilación
+/bin/
+obj/
+
+# Ignorar archivos de configuración de IDE
+.vs/
+.idea/
+*.vscode
+
+# Ignorar dependencias de Node.js
+node_modules/
+
+# Archivos y directorios de Maven
+target/
+.mvn/
+
+# Archivos generados por IntelliJ IDEA
+*.iml
+*.ipr
+*.iws
+
+# Archivos de configuración y caché de IntelliJ IDEA
+*.log
+*.bak
+*.swp
+*.swo
+*.tmp
+
+# Archivos de usuario específicos
+*.user
+*.userPrefs
+
+# Archivos de configuración de NetBeans
+nbproject/private/
+
+# Archivos y directorios generados por Docker
+docker-compose.override.yml
+.docker/
+
+# Archivos de configuración y caché de RubyMine
+.idea/
+
+# Archivos de compilación de Android Studio
+*.apk
+*.ap_
