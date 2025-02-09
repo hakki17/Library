@@ -75,4 +75,9 @@ public class Library {
         return users.add(user);
     }
 
+    //Añadi esta clase para lograr obtener el mapa de libros y asi mismo, en las pruebas, poder saber si todo iba bien o no
+    public Map<Book, Integer> getBookMap(){
+        return books;
+    }
+
 }
