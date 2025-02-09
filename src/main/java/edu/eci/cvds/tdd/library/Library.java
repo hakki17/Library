@@ -2,8 +2,11 @@ package edu.eci.cvds.tdd.library;
 
 import edu.eci.cvds.tdd.library.book.Book;
 import edu.eci.cvds.tdd.library.loan.Loan;
+import edu.eci.cvds.tdd.library.loan.LoanStatus;
 import edu.eci.cvds.tdd.library.user.User;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +79,62 @@ public class Library {
      * @return The new created loan.
      */
     public Loan loanABook(String userId, String isbn) {
-        //TODO Implement the login of loan a book to a user based on the UserId and the isbn.
-        return null;
+        Loan loan = new Loan();
+        loan.setBook(null);
+        loan.setUser(null);
+        loan.setLoanDate(null);
+        loan.setStatus(null);
+        loan.setReturnDate(null);
+        
+        if(userId == null || isbn == null){
+            return loan;
+        }
+
+        
+    
+        //Verificamos que el libro exista y haya libros para poder prestar
+        Book book = null;
+        for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+            Book tempBook = entry.getKey();
+            if(tempBook.getIsbn().equals(isbn)){
+                book = tempBook;
+                break;
+            }
+        }
+        int amount = books.getOrDefault(book,0);
+        if(book == null || amount <=0){
+            return loan;
+        }
+
+        //Verificamos que el usuario si exista
+        User user = null;
+        for (User userTemp : users) {
+            if(userTemp.getId().equals(userId)){
+                user = userTemp;
+                break;
+            }
+        }
+        if(user == null){
+            return loan;
+        }
+
+
+        //Disminuir un libro
+        amount--;
+        books.put(book, amount);
+        LocalDateTime loanDate = LocalDateTime.now();
+
+
+        //Creacion del prestamo
+        loan.setBook(book);
+        loan.setUser(user);
+        
+        loan.setLoanDate(loanDate);
+        loan.setStatus(LoanStatus.ACTIVE);
+        loan.setReturnDate(loanDate.plusWeeks(1));
+
+        
+        return loan;
     }
 
     /**
@@ -98,9 +155,14 @@ public class Library {
         return users.add(user);
     }
 
-    //Añadi esta clase para lograr obtener el mapa de libros y asi mismo, en las pruebas, poder saber si todo iba bien o no
+    //Añadi esta clase para lograr obtener el mapa de libros y asi mismo, en las pruebas, poder saber si todo iba bien o no (Para los test)
     public Map<Book, Integer> getBookMap(){
         return books;
+    }
+
+    //Añadi esta clase para obtener los prestamos (Para los test)
+    public List<Loan> getLoans(){
+        return loans;
     }
 
 }
