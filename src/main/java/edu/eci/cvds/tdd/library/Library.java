@@ -35,8 +35,31 @@ public class Library {
      * @return true if the book was stored false otherwise.
      */
     public boolean addBook(Book book) {
-        //TODO Implement the logic to add a new book into the map.
-        return false;
+        //Evitar ingresar un null
+        if(book == null){
+            return false;
+        }
+
+        //Evitar ingresar libros con valores nulos
+        if(book.getAuthor() == null || book.getTittle() == null || book.getIsbn() == null){
+            return false;
+        }
+
+        //Para evitar ingresar un libro con un ISBN igual a uno ya existente
+        for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+            Book tempBook = entry.getKey();
+            if(book.equals(tempBook) && 
+            !book.getTittle().equals(tempBook.getTittle()) && 
+            !book.getAuthor().equals(tempBook.getAuthor())){
+                return false;
+            }
+        }
+
+        //Simplemente, tomo el valor y aumento 1
+        int amount = books.getOrDefault(book, 0); //Esto es para que si el libro no esta, En vez de dar null, da 0, esto para simplemente sumar 1 y ya.
+        amount++;
+        books.put(book, amount);
+        return true;
     }
 
     /**
@@ -73,6 +96,11 @@ public class Library {
 
     public boolean addUser(User user) {
         return users.add(user);
+    }
+
+    //Añadi esta clase para lograr obtener el mapa de libros y asi mismo, en las pruebas, poder saber si todo iba bien o no
+    public Map<Book, Integer> getBookMap(){
+        return books;
     }
 
 }
