@@ -2,8 +2,11 @@ package edu.eci.cvds.tdd.library;
 
 import edu.eci.cvds.tdd.library.book.Book;
 import edu.eci.cvds.tdd.library.loan.Loan;
+import edu.eci.cvds.tdd.library.loan.LoanStatus;
 import edu.eci.cvds.tdd.library.user.User;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,8 +38,31 @@ public class Library {
      * @return true if the book was stored false otherwise.
      */
     public boolean addBook(Book book) {
-        //TODO Implement the logic to add a new book into the map.
-        return false;
+        //Evitar ingresar un null
+        if(book == null){
+            return false;
+        }
+
+        //Evitar ingresar libros con valores nulos
+        if(book.getAuthor() == null || book.getTittle() == null || book.getIsbn() == null){
+            return false;
+        }
+
+        //Para evitar ingresar un libro con un ISBN igual a uno ya existente
+        for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+            Book tempBook = entry.getKey();
+            if(book.equals(tempBook) && 
+            !book.getTittle().equals(tempBook.getTittle()) && 
+            !book.getAuthor().equals(tempBook.getAuthor())){
+                return false;
+            }
+        }
+
+        //Simplemente, tomo el valor y aumento 1
+        int amount = books.getOrDefault(book, 0); //Esto es para que si el libro no esta, En vez de dar null, da 0, esto para simplemente sumar 1 y ya.
+        amount++;
+        books.put(book, amount);
+        return true;
     }
 
     /**
@@ -53,8 +79,62 @@ public class Library {
      * @return The new created loan.
      */
     public Loan loanABook(String userId, String isbn) {
-        //TODO Implement the login of loan a book to a user based on the UserId and the isbn.
-        return null;
+        Loan loan = new Loan();
+        loan.setBook(null);
+        loan.setUser(null);
+        loan.setLoanDate(null);
+        loan.setStatus(null);
+        loan.setReturnDate(null);
+        
+        if(userId == null || isbn == null){
+            return loan;
+        }
+
+        
+    
+        //Verificamos que el libro exista y haya libros para poder prestar
+        Book book = null;
+        for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+            Book tempBook = entry.getKey();
+            if(tempBook.getIsbn().equals(isbn)){
+                book = tempBook;
+                break;
+            }
+        }
+        int amount = books.getOrDefault(book,0);
+        if(book == null || amount <=0){
+            return loan;
+        }
+
+        //Verificamos que el usuario si exista
+        User user = null;
+        for (User userTemp : users) {
+            if(userTemp.getId().equals(userId)){
+                user = userTemp;
+                break;
+            }
+        }
+        if(user == null){
+            return loan;
+        }
+
+
+        //Disminuir un libro
+        amount--;
+        books.put(book, amount);
+        LocalDateTime loanDate = LocalDateTime.now();
+
+
+        //Creacion del prestamo
+        loan.setBook(book);
+        loan.setUser(user);
+        
+        loan.setLoanDate(loanDate);
+        loan.setStatus(LoanStatus.ACTIVE);
+        loan.setReturnDate(loanDate.plusWeeks(1));
+
+        
+        return loan;
     }
 
     /**
