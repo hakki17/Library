@@ -7,7 +7,6 @@ import edu.eci.cvds.tdd.library.user.User;
 //Importaciones de las cosas para los test
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse; 
@@ -44,21 +43,21 @@ public class LibraryTest {
      * - Si la operacion es satisfactoria (TIpo se hizo lo que queriamos hacer) da true,si no, da false
      * 
      * 2. Cosas basicas que deberian funcionar
-     * 2.1 Añadir un libro nuevo. El conteo de este libro en el mapa debe ser 1
-     * 2.2 Añadir un libro existente. El conteo de este libro en el mapa debe ser 2
-     * 2.3 Añadir 5 veces un libro. El conteo de este libro en el mapa debe ser 5
+     * 2.1 Añadir un libro nuevo. El conteo de este libro en el mapa debe ser 1*
+     * 2.2 Añadir un libro existente. El conteo de este libro en el mapa debe ser 2*
+     * 2.3 Añadir 5 veces un libro. El conteo de este libro en el mapa debe ser 5*
      * 
      * 3. Cosas basicas que no deberian funcionar
-     * 3.1 Añadir null
-     * 3.2 Añadir un book lleno de nulls (Todos sus campos son nulos)
+     * 3.1 Añadir null*
+     * 3.2 Añadir un book lleno de nulls (Todos sus campos son nulos)*
      * 
      * 4. Cosas mas avanzadas que deberian funcionar
-     * 4.1 Añadir un libro con un nombre igual a otro libro, pero de diferente autor y codigo
-     * 4.2 Añadir un libro con un nombre diferente a otro libro, pero de igual autor y codigo diferente
-     * 4.3 Añadir un lirbo con mismo nombre y autor pero diferente ISBN
+     * 4.1 Añadir un libro con un nombre igual a otro libro, pero de diferente autor y codigo*
+     * 4.2 Añadir un libro con un nombre diferente a otro libro, pero de igual autor y codigo diferente*
+     * 4.3 Añadir un lirbo con mismo nombre y autor pero diferente ISBN*
      * 
      * 5. Cosas mas avanzadas que no deberian funcionar
-     * 5.1 Añadir un libro con un ISBN igual a otro pero todo lo demas diferente
+     * 5.1 Añadir un libro con un ISBN igual a otro pero todo lo demas diferente*
      * 
      * Ya con eso dije, deben ser pruebas suficientes para que esto funcione
      */
