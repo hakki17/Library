@@ -20,19 +20,13 @@ import org.junit.jupiter.api.Test;
 public class LibraryTest {
     private Library library;
     private Book book1;
-    private Book book2;
-    private Book book3;
-    private Book book4;
 
     @BeforeEach
     public void setup(){
+        //===================== DATOS PARA ADDBOOK
         library = new Library();
-
-        book1 = new Book("Libro", "Autor","codigo" );
-        book2 = new Book("Libro #2", "Autor #2 ","codigo #2" );
-        book3 = new Book("Libro #3", "Autor #3 ","codigo #3" );
-        book4 = new Book("Libro #4", "Autor #4 ","codigo #4" );
-        
+        book1 = new Book("Libro", "Autor","codigo" );    
+        //=====================
     }
 
     @AfterEach
@@ -40,6 +34,7 @@ public class LibraryTest {
         library = null;
     }
 
+    //================================================== INICIO PRUEBAS ADDBOOK
     /** EXPLICACION DE MIS IDEAS
      * 1. Mire como debe "funcionar" basicamente el metodo
      * - los Book se guardan en un mapa. Donde esta libro:cantidad de ese libro
@@ -54,19 +49,16 @@ public class LibraryTest {
      * 2.3 Añadir 5 veces un libro. El conteo de este libro en el mapa debe ser 5
      * 
      * 3. Cosas basicas que no deberian funcionar
-     * 3.1 Añadir un string
-     * 3.2 Añadir un bool
-     * 3.3 Añadir un user
-     * 3.4 Añadir null
-     * 3.5 Añadir un book lleno de nulls (Todos sus campos son nulos)
+     * 3.1 Añadir null
+     * 3.2 Añadir un book lleno de nulls (Todos sus campos son nulos)
      * 
      * 4. Cosas mas avanzadas que deberian funcionar
-     * 4.1 Añadir un libro con un nombre igual a otro libro, pero de diferente autor
-     * 4.2 Añadir un libro con un nombre diferente a otro libro, pero de igual autor
+     * 4.1 Añadir un libro con un nombre igual a otro libro, pero de diferente autor y codigo
+     * 4.2 Añadir un libro con un nombre diferente a otro libro, pero de igual autor y codigo diferente
+     * 4.3 Añadir un lirbo con mismo nombre y autor pero diferente ISBN
      * 
      * 5. Cosas mas avanzadas que no deberian funcionar
-     * 5.1 Añadir un lirbo con mismo nombre y autor pero diferente ISBN
-     * 5.2 Añadir un libro con un ISBN igual a otro pero todo lo demas diferente
+     * 5.1 Añadir un libro con un ISBN igual a otro pero todo lo demas diferente
      * 
      * Ya con eso dije, deben ser pruebas suficientes para que esto funcione
      */
@@ -114,16 +106,65 @@ public class LibraryTest {
      }
 
 
+     //3.1
      @Test
-     public void testAddBook (){
-
+     public void testAddBookAddNull (){
+        boolean result = library.addBook(null);
+        assertFalse(result);
      }
      
+    //3.2
+    @Test
+    public void testAddBookAddNullBook (){
+        Book nBook = new Book(null, null, null);
+        boolean result = library.addBook(null);
+        assertFalse(result);
+    }
+
+    //4.1
+    @Test
+    public void testAddBookSameTittle (){
+        Book book2 = new Book("Libro", "Autor 2", "codigo 2");
+        
+        library.addBook(book1);
+        boolean result = library.addBook(book2);
+        assertTrue(result);
+
+        
+    }
+
+    //4.2
+    @Test
+    public void testAddBookSameAutor (){
+        Book book3 = new Book("Libro 3", "Autor","codigo 3" );
+        
+        library.addBook(book1);
+        boolean result = library.addBook(book3);
+        assertTrue(result);
+    }
+
+    //4.3
+    @Test
+    public void testAddBookDiferentISBN (){
+        Book book4 = new Book("Libro", "Autor","codigo 4" );
+
+        library.addBook(book1);
+        boolean result = library.addBook(book4);
+        assertTrue(result);
+        
+    }
+
+    //5.1
+    @Test
+    public void testAddBookSameISBN (){
+        Book book5 = new Book("Libro 5", "Autor 5","codigo" );
+
+        library.addBook(book1);
+        boolean result = library.addBook(book5);
+        assertFalse(result);
+    }
 
 
-
-    
-
-
+    //================================================== CIERRE PRUEBAS ADDBOOK
 
 }
