@@ -16,6 +16,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -309,4 +310,119 @@ public class LibraryTest {
       assertEquals(l1, l2);
 
    }
+
+   // ================================================== INICIO PRUEBAS RETURN LOAN
+   /**
+    * EXPLICACION DE MIS IDEAS PARA LAS PRUEBAS:
+    * 1. Casos básicos que SI deberían funcionar:
+    * - 1.1 Devolver un libro prestado normalmente, osea que la devolución si se
+    * vea
+    * - 1.2Verificar que aumenta la cantidad de libros al devolverlo
+    * - 1.3Verificar que la fecha de devolución se establece
+    * 
+    * 2. Casos que no deberían funcionar:
+    * - 2.1 Intentar devolver un préstamo null
+    * - 2.2 Intentar devolver un préstamo con libro null
+    * - 2.3 Intentar devolver un préstamo con usuario null
+    * - 2.4 Intentar devolver un préstamo que no existe
+    * - 2.5 Intentar devolver un préstamo ya devuelto
+    */
+
+   @Test
+   public void testReturnBookNormal() {
+      // Crear libro, luego cargar el prestamo, para poder luego hacer la devolución
+      library.addBook(book1);
+      Loan loan = library.loanABook("01", "codigo");
+
+      // devolución
+      Loan returned = library.returnLoan(loan);
+
+      // estado del préstamo devuelto
+      assertNotNull(returned);
+      assertEquals(LoanStatus.RETURNED, returned.getStatus());
+   }
+
+   @Test
+   public void testBookQuantityIncreasesOnReturn() {
+      // Crear libro, luego cargar el prestamo, para poder luego hacer la devolución
+      library.addBook(book1);
+      Loan loan = library.loanABook("01", "codigo");
+
+      // Verificar cantidad inicial
+      Map<Book, Integer> books = library.getBookMap();
+      int initialQuantity = books.get(book1);
+
+      // Devolución
+      library.returnLoan(loan);
+
+      // Verificar que la cantidad de libros, que debió haber subido uno (+1)
+      int finalQuantity = books.get(book1);
+      assertEquals(initialQuantity + 1, finalQuantity);
+   }
+
+   @Test
+   public void testReturnDateIsSet() {
+      // Crear libro, luego cargar el prestamo, para poder luego hacer la devolución
+      library.addBook(book1);
+      Loan loan = library.loanABook("01", "codigo");
+
+      // devolución libro
+      Loan returned = library.returnLoan(loan);
+
+      // Verificar la fecha devolución
+      assertNotNull(returned.getReturnDate());
+   }
+
+   @Test
+   public void testReturnNullLoan() {
+      Loan returned = library.returnLoan(null);
+      assertNull(returned);
+   }
+
+   @Test
+   public void testReturnLoanWithNullBook() {
+      Loan invalidLoan = new Loan();
+      invalidLoan.setUser(user1);
+      invalidLoan.setBook(null);
+
+      Loan returned = library.returnLoan(invalidLoan);
+      assertNull(returned);
+   }
+
+   @Test
+   public void testReturnLoanWithNullUser() {
+      Loan invalidLoan = new Loan();
+      invalidLoan.setUser(null);
+      invalidLoan.setBook(book1);
+
+      Loan returned = library.returnLoan(invalidLoan);
+      assertNull(returned);
+   }
+
+   @Test
+   public void testReturnNonExistentLoan() {
+      // Crear un préstamo que no está en el sistema
+      Loan fakeLoan = new Loan();
+      fakeLoan.setBook(book1);
+      fakeLoan.setUser(user1);
+      fakeLoan.setStatus(LoanStatus.ACTIVE);
+
+      Loan returned = library.returnLoan(fakeLoan);
+      assertNull(returned);
+   }
+
+   @Test
+   public void testReturnAlreadyReturnedLoan() {
+      // Preparar
+      library.addBook(book1);
+      Loan loan = library.loanABook("01", "codigo");
+
+      // Primera devolución
+      library.returnLoan(loan);
+
+      // Intentar devolver de nuevo
+      Loan secondReturn = library.returnLoan(loan);
+      assertNull(secondReturn);
+   }
+
 }
