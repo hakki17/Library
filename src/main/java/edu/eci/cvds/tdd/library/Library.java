@@ -147,7 +147,35 @@ public class Library {
      * @return the loan with the RETURNED status.
      */
     public Loan returnLoan(Loan loan) {
-        //TODO Implement the login of loan a book to a user based on the UserId and the isbn.
+        // Si el préstamo es nulo, retornamos null
+        if (loan == null) {
+            return null;
+        }
+        
+        // Si el libro o usuario son nulos, retornamos null
+        if (loan.getBook() == null || loan.getUser() == null) {
+            return null;
+        }
+        
+        // Si el préstamo ya está devuelto, retornamos null
+        if (loan.getStatus() == LoanStatus.RETURNED) {
+            return null;
+        }
+        
+        // Aumentamos la cantidad de libros disponibles
+        Book libro = loan.getBook();
+        if (books.containsKey(libro)) {
+            int cantidadActual = books.get(libro);
+            books.put(libro, cantidadActual + 1);
+            
+            // Actualizamos el estado del préstamo
+            loan.setStatus(LoanStatus.RETURNED);
+            loan.setReturnDate(LocalDateTime.now());
+            
+            return loan;
+        }
+        
+        // Si no encontramos el libro, retornamos null
         return null;
     }
 
@@ -164,5 +192,5 @@ public class Library {
     public List<Loan> getLoans(){
         return loans;
     }
-
 }
+
