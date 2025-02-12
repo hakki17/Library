@@ -82,11 +82,17 @@ archetypeArtifactId: maven-archetype-quickstart
 
 #### Método LoanABook
 
-![]()
+![](https://github.com/hakki17/Library/blob/main/img/loanabook1.png)
+
+![](https://github.com/hakki17/Library/blob/main/img/loanabook2.png)
+
+![](https://github.com/hakki17/Library/blob/main/img/loanabook3.png)
 
 #### Método AddBook
 
-![]()
+![](https://github.com/hakki17/Library/blob/main/img/addbook1.png)
+
+![](https://github.com/hakki17/Library/blob/main/img/addbook2.png)
 
 #### Luego de poner las construcciones de los métodos SI pasan las pruebas
 
